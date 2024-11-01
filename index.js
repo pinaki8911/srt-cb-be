@@ -9,7 +9,6 @@ dotenv.config();
 
 const app = express();
 const port = process.env.PORT || 3000;
-const healthCheckPort = 10000; // Port for the health check endpoint
 
 // Middleware
 app.use(
@@ -37,26 +36,6 @@ app.use(errorHandler);
 // Start the main server
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
-});
-
-// Health check server
-const healthCheckApp = express();
-
-healthCheckApp.get("/healthcheck", (req, res) => {
-  const dbStatus = mongoose.connection.readyState === 1 ? "UP" : "DOWN";
-
-  res.status(dbStatus === "UP" ? 200 : 503).json({
-    status: dbStatus,
-    message:
-      dbStatus === "UP"
-        ? "Service is running smoothly"
-        : "Service is unavailable",
-  });
-});
-
-// Start the health check server
-healthCheckApp.listen(healthCheckPort, () => {
-  console.log(`Health check endpoint running on port ${healthCheckPort}`);
 });
 
 export default app;
