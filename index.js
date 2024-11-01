@@ -42,7 +42,7 @@ app.listen(port, () => {
 // Health check server
 const healthCheckApp = express();
 
-healthCheckApp.get("/health", (req, res) => {
+healthCheckApp.get("/healthcheck", (req, res) => {
   const dbStatus = mongoose.connection.readyState === 1 ? "UP" : "DOWN";
 
   res.status(dbStatus === "UP" ? 200 : 503).json({
